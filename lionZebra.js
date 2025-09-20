@@ -1,9 +1,9 @@
 const lion = 'L';
 const zebra = 'Z';
 const testCase1 = "Z Z Z";
-const testCase2 = "L Z";
-const testCase3 =   "  L     L  Z  L  Z  L Z";
-const testCaseToUse = testCase3;
+const testCase2 = "L  Z";
+const testCase3 =   "Z    L";
+const testCaseToUse = testCase2;
 let shortestPath = -1;
 let lionFoundZebra;
 let  zebraFoundLion;
@@ -14,11 +14,12 @@ for(let index1   =0; index1< testCaseToUse.length ; index1++) {
         if( lionFoundZebra|| zebraFoundLion ) {
             let largestIndexValue = (index2>=index1)? index2 : index1;
             let smallestIndexValue = (index2<=index1)? index2 : index1
-            let path = largestIndexValue - smallestIndexValue;
+            let path = (largestIndexValue - smallestIndexValue) -1;
             if(path < shortestPath || shortestPath === -1) {
                 shortestPath = path;
             }
         }
     }
+    
 }
 console.log("Input: ", testCaseToUse, "Output: ", shortestPath);
