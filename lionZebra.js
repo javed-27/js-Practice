@@ -2,21 +2,23 @@ const lion = 'L';
 const zebra = 'Z';
 const testCase1 = "Z Z Z";
 const testCase2 = "L Z";
-const testCaseToUse = testCase2;
+const testCase3 =   "  L     L  Z  L  Z  L Z";
+const testCaseToUse = testCase3;
 let shortestPath = -1;
-let lionFound = 0;
-let zebraFound = 0;
-for(let index = 0; index < testCaseToUse.length ; index++) {
-    if (testCaseToUse[index] === lion ) {
-        lionFound = index;
-        console.log("lion found",index);
-        
+let lionFoundZebra;
+let  zebraFoundLion;
+for(let index1   =0; index1< testCaseToUse.length ; index1++) {
+    for (let index2 =0 ; index2 < testCaseToUse.length+1; index2++) {
+        lionFoundZebra = testCaseToUse[index1] === lion && testCaseToUse[index2] === zebra;
+        zebraFoundLion =  testCaseToUse[index1] === zebra && testCaseToUse[index2] === lion;
+        if( lionFoundZebra|| zebraFoundLion ) {
+            let largestIndexValue = (index2>=index1)? index2 : index1;
+            let smallestIndexValue = (index2<=index1)? index2 : index1
+            let path = largestIndexValue - smallestIndexValue;
+            if(path < shortestPath || shortestPath === -1) {
+                shortestPath = path;
+            }
+        }
     }
-    if (testCaseToUse[index] === zebra ) {
-        zebraFound = index;
-        console.log("zebra found",index);
-        
-    }
-    shortestPath = (zebraFound -lionFound)-1;
 }
 console.log("Input: ", testCaseToUse, "Output: ", shortestPath);
