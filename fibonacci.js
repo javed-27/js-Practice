@@ -1,5 +1,9 @@
 const numberOfTerms = 3;
-const firstNumber = 0;
-const secondNumber = 1;
-const currentNumber = firstNumber + secondNumber ;
-console.log(firstNumber , secondNumber, currentNumber);
+let firstTerm = 0;
+let secondTerm = 1;
+let currentTerm = firstTerm + secondTerm ;
+console.log(firstTerm , secondTerm, currentTerm);
+firstTerm = secondTerm ;
+secondTerm = currentTerm;
+currentTerm = firstTerm + secondTerm ;
+console.log(currentTerm);
