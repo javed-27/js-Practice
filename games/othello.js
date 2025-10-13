@@ -230,7 +230,17 @@ function isPositionEmpty(rows, column, gameValues) {
   return isEmpty;
 }
 
-
+function gameUpdates(column, row, gameValues, currentUser, competitor) {
+  updateRowUp(column, row, gameValues, currentUser, competitor);
+  updateRowDown(column, row, gameValues, currentUser, competitor);
+  updateColumnRight(column, row, gameValues, currentUser, competitor);
+  updateColumnLeft(column, row, gameValues, currentUser, competitor);
+  updateDownRightDiagonal(column, row, gameValues, currentUser, competitor);
+  updateDownLeftDiagonal(column, row, gameValues, currentUser, competitor);
+  updateUpRightDiagonal(column, row, gameValues, currentUser, competitor);
+  updateUpLeftDiagonal(column, row, gameValues, currentUser, competitor);
+  return 1;
+}
 
 function updateGameValues(gameValues, currentUser, competitor) {
 
@@ -248,14 +258,7 @@ function updateGameValues(gameValues, currentUser, competitor) {
     return updateGameValues(gameValues, currentUser, competitor);
   }
 
-  updateRowUp(column, row, gameValues, currentUser, competitor);
-  updateRowDown(column, row, gameValues, currentUser, competitor);
-  updateColumnRight(column, row, gameValues, currentUser, competitor);
-  updateColumnLeft(column, row, gameValues, currentUser, competitor);
-  updateDownRightDiagonal(column, row, gameValues, currentUser, competitor);
-  updateDownLeftDiagonal(column, row, gameValues, currentUser, competitor);
-  updateUpRightDiagonal(column, row, gameValues, currentUser, competitor);
-  updateUpLeftDiagonal(column, row, gameValues, currentUser, competitor)
+  gameUpdates(column, row, gameValues, currentUser, competitor);
   gameValues[column][row] = currentUser;
   displyFormat(gameValues);
 }
