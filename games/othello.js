@@ -116,7 +116,7 @@ function updateUpRightDiagonal(column, row, gameValues, currentUser, competitor)
     return 1;
   }
 
-  const firstFound = [column - 1, row + 1];
+  const firstFound = [row + 1, column - 1];
   for (let index = 1; row + index < 9; index++) {
     console.log(index, column - index, row + index);
     if (gameValues[column - index][row + index] === "  ") return 1;
@@ -125,7 +125,7 @@ function updateUpRightDiagonal(column, row, gameValues, currentUser, competitor)
       const lastFound = [row + index, column - index];
       console.log(firstFound, lastFound);
 
-      return changeValuesDiagonalLeft(gameValues, firstFound[1], firstFound[0] + 1, lastFound[0], currentUser);
+      return changeValuesDiagonalLeft(gameValues, firstFound[0], lastFound[0], firstFound[1], currentUser);
     }
   }
   return 1;
