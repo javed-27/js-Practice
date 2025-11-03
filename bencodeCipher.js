@@ -20,12 +20,24 @@ function decodeList(data) {
   const decodedArray = [];
   let index = 1;
   while (index < data.length - 1) {
+    let decodedData = '';
+
+    if (data[index] === 'l') {
+      decodedData = decodeList(data.slice(index, data.length));
+    }
+
     const current = data.slice(index, data.length - 1);
-    const decodedData = decode(current);
+    decodedData = decode(current);
     decodedArray.push(decodedData);
     index += (decodedData + "").length + 2;
+
     if (typeof (decodedData) === 'string' && decodedData.length >= 10)
       index++;
+
+    if (data[index] === 'e') {
+      return decodedArray;
+    }
+
   }
   return decodedArray;
 }
@@ -44,25 +56,46 @@ function decode(data) {
   return data.slice(start, start + size);
 }
 
-function isEqual(array1, array2) {
-  const end = array1.length;
-  for (let index = 0; index < end; index++) {
-    if (array1[index] !== array2[index]) {
-      return false;
-    }
-  }
-  return true;
+function areObjects(element1, element2) {
+  return (typeof element1) === "object" && (typeof element2) === "object";
 }
 
-function areEqual(array1, array2) {
+function isUndefined(element1, element2) {
+  return element1 === undefined || element2 === undefined;
+}
+
+function isEqual(array1, array2) {
+  let areBothEqual = array1.length === array2.length;
+  const end = array1.length;
+  let index = 0;
+
+  while (areBothEqual && index < end) {
+
+    if (array1[index] !== array2[index]) {
+      areBothEqual = false;
+    }
+
+    if (areObjects(array1[index], array2[index])) {
+      areBothEqual = isEqual(array1[index], array2[index]);
+    }
+    index++;
+  }
+  return areBothEqual;
+}
+
+function areDeepEqual(array1, array2) {
+  if (isUndefined(array1, array2)) {
+    return false;
+  }
   const array1Length = array1.length;
   const array2Length = array2.length;
-  return array1Length === array2Length ? isEqual(array1, array2) : false;
+  return array1Length === array2Length ?
+    isEqual(array1, array2) : false;
 }
 
 
 function messageToPrint(description, data, expect, actual) {
-  const isPass = areEqual(actual, expect);
+  const isPass = areDeepEqual(actual, expect);
   const status = isPass ? "✅" : "❌";
   const message = "  " + description;
   const inputFragment = isPass ? "" : "\tinput:|" + data;
@@ -97,9 +130,12 @@ function testAll() {
 }
 
 function testDecodeList() {
+  heading("decoding list");
   testDecode("array of number", "li123ei23ei27ei9ee", [123, 23, 27, 9]);
   testDecode("array of string", "l5:hello11:hello worldi", ["hello", "hello world"]);
   testDecode("array of string and  numbers", "l5:helloi123ei23ei27ei9e11:hello worldi", ["hello", 123, 23, 27, 9, "hello world"]);
+  testDecode("nested array", "l3:one3:twol5:threeee", ["one", "two", ["three"]]);
+  testDecode("nested array", "l0:i0ele", ["", 0, []]);
 }
 
 function testDecodeNumber() {
