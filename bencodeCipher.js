@@ -18,12 +18,14 @@ function encode(data) {
 
 function decodeList(data) {
   const decodedArray = [];
-  for (let index = 0; index < data.length; index++) {
-
-    if (data[index] === 'i') {
-      const current = data.slice(index, data.length);
-      decodedArray.push(decode(current));
-    }
+  let index = 1;
+  while (index < data.length - 1) {
+    const current = data.slice(index, data.length - 1);
+    const decodedData = decode(current);
+    decodedArray.push(decodedData);
+    index += (decodedData + "").length + 2;
+    if (typeof (decodedData) === 'string' && decodedData.length >= 10)
+      index++;
   }
   return decodedArray;
 }
@@ -34,12 +36,12 @@ function decode(data) {
   }
 
   if (data[0] === 'l') {
-    return decodeList(data.slice(1, data.length - 1));
+    return decodeList(data);
   }
 
   const size = parseInt(data);
-  const startSlice = (size + "").length + 1;
-  return data.slice(startSlice, startSlice + size);
+  const start = (size + "").length + 1;
+  return data.slice(start, start + size);
 }
 
 function isEqual(array1, array2) {
@@ -96,6 +98,8 @@ function testAll() {
 
 function testDecodeList() {
   testDecode("array of number", "li123ei23ei27ei9ee", [123, 23, 27, 9]);
+  testDecode("array of string", "l5:hello11:hello worldi", ["hello", "hello world"]);
+  testDecode("array of string and  numbers", "l5:helloi123ei23ei27ei9e11:hello worldi", ["hello", 123, 23, 27, 9, "hello world"]);
 }
 
 function testDecodeNumber() {
@@ -120,7 +124,7 @@ function testEncodeNumber() {
 
 function testEncodeString() {
   heading(" encoding a string ");
-  testEncode("checking hello", "hello", "5:hello");
+  testEncode("checking hello", "hello", "6:hello");
   testEncode("checking empty string", "", "0:");
   testEncode("checking special charecter string", "special!@#$chars", "16:special!@#$chars");
 }
