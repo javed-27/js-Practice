@@ -16,16 +16,51 @@ function encode(data) {
   return "l" + encodeList(data) + "e";
 }
 
+function decodeList(data) {
+  const decodedArray = [];
+  for (let index = 0; index < data.length; index++) {
+
+    if (data[index] === 'i') {
+      const current = data.slice(index, data.length);
+      decodedArray.push(decode(current));
+    }
+  }
+  return decodedArray;
+}
+
 function decode(data) {
   if (data[0] === 'i') {
     return parseInt(data.slice(1, data.indexOf('e')));
   }
 
-  return data.slice(2, data.length);
+  if (data[0] === 'l') {
+    return decodeList(data.slice(1, data.length - 1));
+  }
+
+  const size = parseInt(data);
+  const startSlice = (size + "").length + 1;
+  return data.slice(startSlice, startSlice + size);
 }
 
+function isEqual(array1, array2) {
+  const end = array1.length;
+  for (let index = 0; index < end; index++) {
+    if (array1[index] !== array2[index]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function areEqual(array1, array2) {
+  const array1Length = array1.length;
+  const array2Length = array2.length;
+  return array1Length === array2Length ? isEqual(array1, array2) : false;
+}
+
+
 function messageToPrint(description, data, expect, actual) {
-  const isPass = expect === actual;
+  const isPass = areEqual(actual, expect);
   const status = isPass ? "✅" : "❌";
   const message = "  " + description;
   const inputFragment = isPass ? "" : "\tinput:|" + data;
@@ -56,6 +91,11 @@ function testAll() {
   testEncodeList();
   testDecodeNumber();
   testDecodeString();
+  testDecodeList();
+}
+
+function testDecodeList() {
+  testDecode("array of number", "li123ei23ei27ei9ee", [123, 23, 27, 9]);
 }
 
 function testDecodeNumber() {
@@ -68,6 +108,7 @@ function testDecodeString() {
   heading("decode string");
   testDecode("checking non empty string", "5:hello", "hello");
   testDecode("checking a empty string", "0:", "");
+  testDecode("checking a empty string", "10:javedahmed", "javedahmed");
 }
 
 function testEncodeNumber() {
