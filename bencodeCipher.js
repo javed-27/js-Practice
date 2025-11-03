@@ -17,7 +17,11 @@ function encode(data) {
 }
 
 function decode(data) {
-  return parseInt(data.slice(1, data.length -1));
+  if (data[0] === 'i') {
+    return parseInt(data.slice(1, data.indexOf('e')));
+  }
+
+  return data.slice(2, data.length);
 }
 
 function messageToPrint(description, data, expect, actual) {
@@ -43,7 +47,7 @@ function testDecode(description, data, expect) {
 }
 
 function heading(text) {
-console.log(`\n ${"-".repeat(20) + text + "-".repeat(20)} \n`);
+  console.log(`\n ${"-".repeat(20) + text + "-".repeat(20)} \n`);
 }
 
 function testAll() {
@@ -51,11 +55,19 @@ function testAll() {
   testEncodeString();
   testEncodeList();
   testDecodeNumber();
+  testDecodeString();
 }
 
 function testDecodeNumber() {
   heading(" decoding a number ");
   testDecode("checking positive integer", "i123e", 123);
+  testDecode("checking negative integer", "i-9e", -9);
+}
+
+function testDecodeString() {
+  heading("decode string");
+  testDecode("checking non empty string", "5:hello", "hello");
+  testDecode("checking a empty string", "0:", "");
 }
 
 function testEncodeNumber() {
@@ -76,6 +88,7 @@ function testEncodeList() {
   heading(" encoding a list ");
   testEncode("checking list", [0, "", "test"], "li0e0:4:teste");
   testEncode("checking nested list", ["apple", 123, ["banana", -5]], "l5:applei123el6:bananai-5eee");
+  testEncode("checking nested empty list", ["", 0, []], "l0:i0elee");
 }
 
 testAll();
