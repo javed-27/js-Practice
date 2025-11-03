@@ -148,7 +148,7 @@ function testDecodeString() {
   heading("decode string");
   testDecode("checking non empty string", "5:hello", "hello");
   testDecode("checking a empty string", "0:", "");
-  testDecode("checking a empty string", "10:javedahmed", "javedahmed");
+  testDecode("checking a large string ", "10:javedahmed", "javedahmed");
 }
 
 function testEncodeNumber() {
