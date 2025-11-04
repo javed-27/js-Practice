@@ -63,21 +63,14 @@ function sort(data) {
   return sortedArray;
 }
 
-function benchMark(noOfElements) {
-  heading("sorting of data")
+function statistics(noOfElements) {
   const data = randomData(noOfElements);
-  numberOfIterations = 0;
-  const sortedData = sort(data)
-  console.log(`data :: ${data} \nsorted data :: ${sortedData}`);
-  console.log(`benchmark ${noOfElements} | ${numberOfIterations}`);
-  statistics(data);
-}
-
-function statistics(data) {
+  const sortedData = sort(data);
   heading("mean of data");
+  console.log(`data :: ${data} \nsorted data :: ${sortedData}`);
   console.log(`Mean of data :: ${meanOf(data)}`);
   console.log(`median of data :: ${medianOf(data)}`);
   console.log(`standard deviation of data :: ${strandardDeviationOf(data)}`);
 }
 
-benchMark(10);
+statistics(10);
