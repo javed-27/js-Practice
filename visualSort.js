@@ -8,24 +8,27 @@
     const data = [];
     for (let index = 0; index < noOfElements; index++) {
 
-      data.push(genarateRandomBetween(1, 100));
+      data.push(genarateRandomBetween(10, 100));
     }
     return data
   }
 
-  function wait() {
-    for (let index = 0; index < 2000000000; index++) {
+  function delay() {
+    for (let index = 0; index < 1000000000; index++) {
     }
   }
 
-  function visualize(data, current = 0) {
+  function visualize(data, current = 0, fixed=0, symbol = '🟪') {
     console.clear();
+    console.log("-------- bubble sort --------");
+    
     for (let index = 0; index < data.length; index++) {
-      if (index === current) console.log('🟧'.repeat(Math.round(data[index] / 10) + 1));
+      if (index === current || index === fixed) 
+        console.log(`${data[index]} ${symbol.repeat(Math.round(data[index] / 10) + 1)} `);
       else
-        console.log('🟪'.repeat(Math.round(data[index] / 10) + 1));
+        console.log(`${data[index]} ${'🟪'.repeat(Math.round(data[index] / 10) + 1)}`);
     }
-    wait();
+    delay();
   }
 
   function sort(data) {
@@ -34,15 +37,15 @@
     for (let i = 0; i < sortedArray.length; i++) {
       for (let j = i + 1; j < sortedArray.length; j++) {
         numberOfIterations++;
-        visualize(sortedArray, j);
+        visualize(sortedArray, j,i,'🟥');
         if (sortedArray[i] > sortedArray[j]) {
           const temp = sortedArray[i];
           sortedArray[i] = sortedArray[j];
-          visualize(sortedArray, j);
           sortedArray[j] = temp;
-          visualize(sortedArray, i);
+          visualize(sortedArray, j,i,'🟥');
         }
       }
+      visualize(sortedArray)
     }
     return sortedArray;
   }
