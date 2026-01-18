@@ -1,6 +1,7 @@
 import { shuffle } from "jsr:@std/random";
 
-const url = `https://opentdb.com/api.php?amount=10&category=22&type=multiple`;
+const url =
+  `https://opentdb.com/api.php?amount=10&category=22&type=multiple&difficulty=easy`;
 const urlData = await fetch(url).then((raw) => raw.body);
 const decoder = new TextDecoder();
 const arr = [];
