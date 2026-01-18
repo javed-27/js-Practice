@@ -4,7 +4,7 @@ import { display } from "./display_status.js";
 import {} from "jsr:@std/fmt/colors";
 
 const entries = [];
-for (const { question, options, correct_answer } of quizData.slice(5)) {
+for (const { question, options, correct_answer } of quizData) {
   console.clear();
   const answer = await checkbox({
     message: question,
@@ -26,4 +26,4 @@ for (const { question, options, correct_answer } of quizData.slice(5)) {
 }
 
 console.clear();
-display(entries, quizData.slice(5));
+display(entries, quizData);
