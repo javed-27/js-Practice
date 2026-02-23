@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Document</title>
+    <style>
+      * {
+        font-size: 1.1em;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Details</h1>
+    <div class="details">
+      <form action="/login" method="post">
+        <div class="name">
+          <label for="user-id">User Name</label>
+          <input
+            type="text"
+            name="user-name"
+            required
+            placeholder="first name"
+            name="user-name"
+          >
+        </div>
+        <div class="password">
+          <label for="pass">password</label>
+          <input
+            type="password"
+            id="pass"
+            required
+            placeholder="password"
+            name="password"
+          >
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>
